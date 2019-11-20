@@ -17,8 +17,6 @@ auth.set_access_token(access_token, access_secret)
 
 api = tweepy.API(auth, wait_on_rate_limit=True)
 
-db = pymysql.connect("localhost","YOUR USERNAME","YOUR PASSWORD","YOUR DB NAME")
-
 account_list = ["GiuseppeConteIT","luigidimaio","nzingaretti","matteorenzi","GiorgiaMeloni","matteosalvinimi","CarloCalenda","berlusconi","civati"]
 
 if len(account_list) > 0:
@@ -74,6 +72,7 @@ if len(account_list) > 0:
     creation_date = str(datetime.now())
     
     # write to db
+    db = pymysql.connect("localhost","YOUR USERNAME","YOUR PASSWORD","YOUR DB NAME")
     cursor = db.cursor()
     sql = "INSERT INTO scrapes (name, screen_name, profile_image_url, description, statuses_count, friends_count, followers_count, account_age_days, average_tweets, most_mentioned_users, most_used_hashtags,processed_tweets, creation_date, creation_day) VALUES (%s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     try:
@@ -84,4 +83,4 @@ if len(account_list) > 0:
       raise
       db.rollback()
     print(screen_name + " processed successfully.")
-db.close()
+    db.close()
